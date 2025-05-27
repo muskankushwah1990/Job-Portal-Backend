@@ -200,10 +200,15 @@ class UserController {
             if (user.role === role) {
               const token = jwt.sign(
                 { ID: user._id },
-                "HF5XJowO_L21gOejLPjOORKI_ts"
+                process.env.API_SECRET
               );
               //console.log(token);
-              res.cookie("token", token);
+              res.cookie("token", token, {
+                 httpOnly: true,
+  secure: true, // VERY IMPORTANT for HTTPS (Netlify is HTTPS)
+  sameSite: "None", // VERY IMPORTANT for cross-site cookies
+  maxAge: 24 * 60 * 60 * 1000, // 1 day
+              });
               res
                 .status(201)
                 .json({

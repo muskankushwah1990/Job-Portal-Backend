@@ -11,7 +11,7 @@ const checkUserAuth = async (req, res, next) => {
 
     try {
         // Verify the JWT with the secret key
-        const data = jwt.verify(token, "HF5XJowO_L21gOejLPjOORKI_ts");
+        const data = jwt.verify(token, process.env.API_SECRET);
         
         // Find the user using the ID from the token
         const userdata = await UserModel.findOne({ _id: data.ID });
