@@ -198,40 +198,31 @@ class UserController {
           );
           if (isMatched) {
             if (user.role === role) {
-              const token = jwt.sign(
-                { ID: user._id },
-                process.env.API_SECRET
-              );
+              const token = jwt.sign({ ID: user._id }, process.env.API_SECRET);
               //console.log(token);
               res.cookie("token", token, {
-                 httpOnly: true,
-  secure: true, // VERY IMPORTANT for HTTPS (Netlify is HTTPS)
-  sameSite: "None", // VERY IMPORTANT for cross-site cookies
-  maxAge: 24 * 60 * 60 * 1000, // 1 day
+                httpOnly: true,
+                secure: true, // VERY IMPORTANT for HTTPS (Netlify is HTTPS)
+                sameSite: "None", // VERY IMPORTANT for cross-site cookies
+                maxAge: 24 * 60 * 60 * 1000, // 1 day
               });
-              res
-                .status(201)
-                .json({
-                  status: "success",
-                  message: "Login OK Report",
-                  token: token,
-                  user,
-                });
+              res.status(201).json({
+                status: "success",
+                message: "Login OK Report",
+                token: token,
+                user,
+              });
             } else {
-              res
-                .status(401)
-                .json({
-                  status: "failed",
-                  message: "User with this role not found",
-                });
+              res.status(401).json({
+                status: "failed",
+                message: "User with this role not found",
+              });
             }
           } else {
-            res
-              .status(402)
-              .json({
-                status: "failed",
-                message: "Email or password are not found",
-              });
+            res.status(402).json({
+              status: "failed",
+              message: "Email or password are not found",
+            });
           }
         } else {
           res
@@ -252,7 +243,7 @@ class UserController {
     try {
       res
         .status(201)
-        .cookie("token", "HF5XJowO_L21gOejLPjOORKI_ts", {
+        .cookie("token", process.env.API_SECRET, {
           httpOnly: true,
           expire: new Date(Date.now()),
         })
