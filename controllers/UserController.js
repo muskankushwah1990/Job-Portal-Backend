@@ -241,16 +241,18 @@ class UserController {
 
   static logout = async (req, res) => {
     try {
-      res.status(201);
-      clearCookie("token", {
-        httpOnly: true,
-        secure: true,
-        sameSite: "None",
-        path: "/",
-      }).json({
-        success: true,
-        message: "Logout Successfully",
-      });
+      res
+        .status(201)
+        .clearCookie("token", {
+          httpOnly: true,
+          secure: true,
+          sameSite: "None",
+          path: "/",
+        })
+        .json({
+          success: true,
+          message: "Logout Successfully",
+        });
     } catch (error) {
       console.log(error);
       res.status(490).json({ status: "failed", message: error.message });
