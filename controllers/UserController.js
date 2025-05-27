@@ -202,8 +202,8 @@ class UserController {
               //console.log(token);
               res.cookie("token", token, {
                 httpOnly: true,
-                secure: true, // VERY IMPORTANT for HTTPS (Netlify is HTTPS)
-                sameSite: "None", // VERY IMPORTANT for cross-site cookies
+                secure: true,
+                sameSite: "None",
                 maxAge: 24 * 60 * 60 * 1000, // 1 day
               });
               res.status(201).json({
@@ -241,16 +241,16 @@ class UserController {
 
   static logout = async (req, res) => {
     try {
-      res
-        .status(201)
-        .cookie("token", process.env.API_SECRET, {
-          httpOnly: true,
-          expire: new Date(Date.now()),
-        })
-        .json({
-          success: true,
-          message: "Logout Successfully",
-        });
+      res.status(201);
+      clearCookie("token", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "None",
+        path: "/",
+      }).json({
+        success: true,
+        message: "Logout Successfully",
+      });
     } catch (error) {
       console.log(error);
       res.status(490).json({ status: "failed", message: error.message });
